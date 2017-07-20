@@ -54,7 +54,7 @@ ReactDOM.render(
 
 
 ## Support billboard.js api
-- only using getter method not support
+- not support public api that only use as getter methods.
 - you can find billboard.js api from [document](https://naver.github.io/billboard.js/release/latest/doc/Chart.html) 
 	- Chart > axis:labels ~ zoom:enable
 
