@@ -185,6 +185,10 @@ var BB = function (_React$Component) {
 				}
 			});
 
+			watch("interaction", function (data) {
+				_this2.destroy();
+			});
+
 			// TODO
 			// watch('data', (data) => this.instance.load(data));
 			// watch('data', (data) => this.instance.unload(data));
@@ -199,9 +203,7 @@ var BB = function (_React$Component) {
 	}, {
 		key: "componentDidMount",
 		value: function componentDidMount() {
-			var node = this.wrapper;
-
-			this.generateChart(node, this.props);
+			this.generateChart();
 		}
 
 		// 업데이트 직전
@@ -232,7 +234,9 @@ var BB = function (_React$Component) {
 
 	}, {
 		key: "componentDidUpdate",
-		value: function componentDidUpdate() {}
+		value: function componentDidUpdate() {
+			this.generateChart();
+		}
 
 		// 언마운트 직전 한번
 
@@ -242,18 +246,28 @@ var BB = function (_React$Component) {
 			this.destroy();
 		}
 	}, {
+		key: "renewal",
+		value: function renewal() {
+			this.generateChart();
+		}
+	}, {
 		key: "destroy",
 		value: function destroy() {
 			try {
-				return !(this.instance && this.instance.destroy());
+				this.instance && this.instance.destroy();
+				this.instance = null;
 			} catch (err) {
 				throw new Error("Internal BB error", err);
 			}
 		}
 	}, {
 		key: "generateChart",
-		value: function generateChart(mountNode, config) {
+		value: function generateChart() {
+			var mountNode = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.wrapper;
+			var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.props;
+
 			// using react node
+
 			var newConfig = (0, _util.deepCopy)({}, config);
 			newConfig.bindto = mountNode;
 

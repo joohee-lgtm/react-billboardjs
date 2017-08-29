@@ -39,6 +39,10 @@ class BB extends React.Component {
 			}
 		});
 
+		watch("interaction", (data) => {
+			this.destroy();
+		});
+
 		// TODO
 		// watch('data', (data) => this.instance.load(data));
 		// watch('data', (data) => this.instance.unload(data));
@@ -50,9 +54,7 @@ class BB extends React.Component {
 
 	// 마운트 직후 한번
 	componentDidMount() {
-		const node = this.wrapper;
-
-		this.generateChart(node, this.props);
+		this.generateChart();
 	}
 
 	// 업데이트 직전
@@ -76,7 +78,7 @@ class BB extends React.Component {
 
 	// 업데이트 직후
 	componentDidUpdate() {
-
+		this.generateChart();
 	}
 
 	// 언마운트 직전 한번
@@ -84,16 +86,22 @@ class BB extends React.Component {
 		this.destroy();
 	}
 
+	renewal() {
+		this.generateChart();
+	}
+
 	destroy() {
 		try {
-			return !(this.instance && this.instance.destroy());
+			this.instance && this.instance.destroy();
+			this.instance = null;
 		} catch (err) {
 			throw new Error("Internal BB error", err);
 		}
 	}
 
-	generateChart(mountNode, config) {
+	generateChart(mountNode = this.wrapper, config = this.props) {
 		// using react node
+
 		const newConfig = deepCopy({}, config);
 		newConfig.bindto = mountNode;
 
